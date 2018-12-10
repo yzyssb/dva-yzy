@@ -4,7 +4,18 @@ import createLoading from 'dva-loading'
 import { message } from 'antd'
 import './index.css';
 
-const ERROR_MSG_DURATION = 3
+import React from 'react';
+import ReactDOM from 'react-dom';
+
+import { LocaleProvider } from 'antd';
+
+import zhCN from 'antd/lib/locale-provider/zh_CN';
+
+import moment from 'moment';
+import 'moment/locale/zh-cn';
+moment.locale('zh-cn');
+
+// const ERROR_MSG_DURATION = 3
 
 // 1. Initialize
 // const app = dva({
@@ -36,4 +47,7 @@ app.use(createLoading({ effects: true }));
 app.router(require('./router').default);
 
 // 5. Start
-app.start('#root');
+// app.start('#root');
+const App = app.start();
+ReactDOM.render(<LocaleProvider locale={zhCN}><App /></LocaleProvider>,
+  document.getElementById('root'));

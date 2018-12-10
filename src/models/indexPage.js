@@ -1,4 +1,8 @@
-import * as indexRequests from '../services/indexPage'
+// import * as indexRequests from '../services/indexPage'
+import Config from '../services/HttpService';
+import {message} from 'antd';
+import moment from 'moment';
+const { config, httpPost } = Config
 
 export default {
 
@@ -9,35 +13,57 @@ export default {
       { key: 1, name: 'yzy', sex: 'male', age: 11 },
       { key: 2, name: 'ssb', sex: 'female', age: 12 }
     ],
+
+    offset:0,
+    total:10,
+    size:10,
+    current:1,
   },
 
   subscriptions: {
     setup({ dispatch, history }) {
       history.listen(location => {
         if (location.pathname === '/') {
-          console.log(111)
           dispatch({
             type: 'userPower',
             payload: {}
           })
+          var tt=moment().startOf('day')
+          console.log( new Date(tt) )
+          message.success(String(new Date(tt)))
         }
       });
     },
   },
 
   effects: {
-    *userPower({ payload }, { call, put, select }) {
+    // *userPower({ payload }, { call, put, select }) {
+    //   const indexPage = yield select(({ indexPage }) => indexPage)
+    //   const data = yield call(indexRequests.userPower, {})
+    //   var list = indexPage.list
+    //   list[1].name = data.data
+    //   yield put({
+    //     type: 'updatePayload',
+    //     payload: {
+    //       list
+    //     }
+    //   })
+    // },
+    * userPower({ payload }, { select, call, put }) {
+
       const indexPage = yield select(({ indexPage }) => indexPage)
-      const data = yield call(indexRequests.userPower, {})
+
+      const { data } = yield call(httpPost, config.WGjiekou, payload);
+
       var list = indexPage.list
-      list[1].name = data.data
+      list[1].name = data
       yield put({
         type: 'updatePayload',
         payload: {
           list
         }
       })
-    }
+    },
   },
 
   reducers: {

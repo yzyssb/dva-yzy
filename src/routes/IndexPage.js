@@ -12,8 +12,28 @@ function IndexPage({ dispatch, indexPage }) {
     { title: 'age', dataIndex: 'age', key: 'age' },
   ]
 
-  console.log(indexPage)
-  // const indexPage=indexPage.indexPage
+  const pagination = {
+    total: indexPage.total,
+    current:indexPage.page,
+    pageSize: indexPage.size,
+    onChange: (pageNo) => {
+        onPageChange(pageNo)
+    },
+    showSizeChanger:true,
+    onShowSizeChange:SizeChange,
+    showQuickJumper:true,
+    showTotal: (total) => { return `共 ${indexPage.total} 条` },
+};
+
+function SizeChange(current, pageSize){
+    dispatch({type: 'indexPage/updatePayload',payload:{size:pageSize,page:1}})
+}
+
+function onPageChange(pageNo){
+    var offset = pageNo*indexPage.size-indexPage.size;
+    dispatch({type: 'indexPage/updatePayload',payload:{page:pageNo}})
+}
+
 
   function changeValue(i) {
     var list = indexPage.list
@@ -37,6 +57,7 @@ function IndexPage({ dispatch, indexPage }) {
       <Table
         columns={columns}
         dataSource={indexPage.list}
+        pagination={pagination}
       />
     </div>
   );
