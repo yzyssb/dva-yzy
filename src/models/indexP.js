@@ -1,4 +1,3 @@
-// import * as indexRequests from '../services/indexPage'
 import Config from '../services/HttpService';
 import {message} from 'antd';
 import moment from 'moment';
@@ -6,7 +5,7 @@ const { config, httpPost } = Config
 
 export default {
 
-  namespace: 'indexPage',
+  namespace: 'indexP',
 
   state: {
     list: [
@@ -38,9 +37,9 @@ export default {
 
   effects: {
     // *userPower({ payload }, { call, put, select }) {
-    //   const indexPage = yield select(({ indexPage }) => indexPage)
+    //   const indexP = yield select(({ indexP }) => indexP)
     //   const data = yield call(indexRequests.userPower, {})
-    //   var list = indexPage.list
+    //   var list = indexP.list
     //   list[1].name = data.data
     //   yield put({
     //     type: 'updatePayload',
@@ -51,11 +50,11 @@ export default {
     // },
     * userPower({ payload }, { select, call, put }) {
 
-      const indexPage = yield select(({ indexPage }) => indexPage)
+      const indexP = yield select(({ indexP }) => indexP)
 
       const { data } = yield call(httpPost, config.WGjiekou, payload);
 
-      var list = indexPage.list
+      var list = indexP.list
       list[1].name = data
       yield put({
         type: 'updatePayload',
